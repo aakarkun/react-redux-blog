@@ -80,7 +80,7 @@ import map from 'lodash/map';
                         onChange={this.onChange}
                         value={this.state.timezone}    
                     >
-                        <option value="" disabled>Choose your Timezone</option>
+                        <option value="" disabled>Choose your Timezone!</option>
                         {options}
                     </select> 
                 </div>
