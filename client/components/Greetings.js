@@ -5,6 +5,7 @@ import React from 'react';
         return(
             <div>
                 <h2>Hi! React Developer.</h2>
+                <p>- Greetings</p>
             </div>
         );
     }

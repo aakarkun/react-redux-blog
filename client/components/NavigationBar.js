@@ -11,7 +11,7 @@ import SignupPage from './signup/SignupPage';
                         <Link to='/' className="item">
                             <i className="home icon"></i> Home
                         </Link>
-                        <Link to='#' className="item">
+                        <Link to='/blog' className="item">
                             <i className="book icon"></i> Blog                            
                         </Link>
                         <div className="right item">
