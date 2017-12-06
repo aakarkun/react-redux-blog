@@ -2,7 +2,6 @@ import React from 'react';
 import timezones from '../../data/timezones';
 import PropTypes from 'prop-types';
 import map from 'lodash/map';
-import { connect } from 'react-redux';
 
  class SignupForm extends React.Component {
      constructor(props) {
@@ -96,4 +95,4 @@ SignupForm.propTypes = {
     userSignupRequest: PropTypes.func.isRequired
 }
 
-export default connect(null, { userSignupRequest })(SignupForm);
+export default SignupForm;
