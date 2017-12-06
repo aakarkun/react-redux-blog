@@ -2,8 +2,18 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './components/Root';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-render(<Root />, document.getElementById('app'));
+const store = createStore(
+    (state = {}) => state,
+    applyMiddleware(thunk)
+);
+
+render(<Provider store={store}>
+            <Root />
+        </Provider>, document.getElementById('app'));
 
 if(module.hot) {
     module.hot.accept('./components/Root', () => {
