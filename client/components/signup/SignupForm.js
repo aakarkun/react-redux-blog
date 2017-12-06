@@ -2,6 +2,7 @@ import React from 'react';
 import timezones from '../../data/timezones';
 import PropTypes from 'prop-types';
 import map from 'lodash/map';
+import classnames from 'classnames';
 
  class SignupForm extends React.Component {
      constructor(props) {
@@ -11,7 +12,9 @@ import map from 'lodash/map';
              email: '',
              password: '',
              passwordConfirmation: '',
-             timezone: ''
+             timezone: '',
+             errors: {},
+             isLoading: false
          }
 
          this.onChange = this.onChange.bind(this);
@@ -24,16 +27,21 @@ import map from 'lodash/map';
 
      onSubmit(e) {
         e.preventDefault();
-        this.props.userSignupRequest(this.state);
+        this.setState({ errors: {}, isLoading: true });
+        this.props.userSignupRequest(this.state).then(
+            () => {},
+            (data) => this.setState({ errors: data.response.data, isLoading: false })
+        );
     }
 
     render() {
+        const { errors } = this.state;
         const options = map(timezones, (val, key) => 
             <option key={val} value={val}>{key}</option>  
         );
         return(
             <form className="ui form" onSubmit={this.onSubmit}>
-                <div className="field">
+                <div className={classnames('field', {'error': errors.username})}>
                     <label>Username</label>
                     <input 
                         type="text"
@@ -42,8 +50,9 @@ import map from 'lodash/map';
                         name="username" 
                         placeholder="Username"
                     />
+                    {errors.username && <span style={{color: "#9f3a38"}}>{errors.username}</span>}
                 </div>
-                <div className="field">
+                <div className={classnames('field', {'error': errors.email})}>
                     <label>Email</label>
                     <input 
                         type="email"
@@ -52,8 +61,9 @@ import map from 'lodash/map';
                         name="email" 
                         placeholder="Email"
                     />
+                    {errors.email && <span style={{color: "#9f3a38"}}>{errors.email}</span>}
                 </div>
-                <div className="field">
+                <div className={classnames('field', {'error': errors.password})}>
                     <label>Password</label>
                     <input 
                         type="password"
@@ -62,8 +72,9 @@ import map from 'lodash/map';
                         name="password" 
                         placeholder="Password"
                     />
+                    {errors.password && <span style={{color: "#9f3a38"}}>{errors.password}</span>}                    
                 </div>
-                <div className="field">
+                <div className={classnames('field', {'error': errors.passwordConfirmation})}>
                     <label>Password Confirmation</label>
                     <input 
                         type="password"
@@ -72,8 +83,9 @@ import map from 'lodash/map';
                         name="passwordConfirmation" 
                         placeholder="Retype password"
                     />
+                    {errors.passwordConfirmation && <span style={{color: "#9f3a38"}}>{errors.passwordConfirmation}</span>}                    
                 </div>
-                <div className="field">
+                <div className={classnames('field', {'error': errors.timezone})}>
                     <label>Timezone</label>
                     <select 
                         className="ui search dropdown"
@@ -83,9 +95,10 @@ import map from 'lodash/map';
                     >
                         <option value="" disabled>Choose your Timezone!</option>
                         {options}
-                    </select> 
+                    </select>
+                    {errors.timezone && <span style={{color: "#9f3a38"}}>{errors.timezone}</span>}                     
                 </div>
-                <button className="ui button" type="submit">Submit</button>
+                <button disabled={this.state.isLoading} className="ui button" type="submit">Submit</button>
             </form>
         );
     }
