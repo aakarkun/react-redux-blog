@@ -1,6 +1,7 @@
 import React from 'react';
 import timezones from '../../data/timezones';
 import PropTypes from 'prop-types';
+// import browserHistory from 'react-router';
 import map from 'lodash/map';
 import classnames from 'classnames';
 import validateInput from '../../../server/shared/validations/signup';
