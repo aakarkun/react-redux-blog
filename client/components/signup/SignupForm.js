@@ -3,6 +3,8 @@ import timezones from '../../data/timezones';
 import PropTypes from 'prop-types';
 import map from 'lodash/map';
 import classnames from 'classnames';
+import validateInput from '../../../server/shared/validations/signup';
+import TextField from '../common/TextField';
 
  class SignupForm extends React.Component {
      constructor(props) {
@@ -25,13 +27,25 @@ import classnames from 'classnames';
          this.setState({ [e.target.name]: e.target.value })
      }
 
+     isValid() {
+         const { errors, isValid } = validateInput(this.state);
+
+         if(!isValid) {
+             this.setState({ errors });
+         }
+
+         return isValid;
+     }
+
      onSubmit(e) {
         e.preventDefault();
-        this.setState({ errors: {}, isLoading: true });
-        this.props.userSignupRequest(this.state).then(
-            () => {},
-            (data) => this.setState({ errors: data.response.data, isLoading: false })
-        );
+        if(this.isValid()) {
+            this.setState({ errors: {}, isLoading: true });
+            this.props.userSignupRequest(this.state).then(
+                () => {},
+                (data) => this.setState({ errors: data.response.data, isLoading: false })
+            );
+        }
     }
 
     render() {
@@ -41,50 +55,36 @@ import classnames from 'classnames';
         );
         return(
             <form className="ui form" onSubmit={this.onSubmit}>
-                <div className={classnames('field', {'error': errors.username})}>
-                    <label>Username</label>
-                    <input 
-                        type="text"
-                        value={this.state.username}
-                        onChange={this.onChange}
-                        name="username" 
-                        placeholder="Username"
-                    />
-                    {errors.username && <span style={{color: "#9f3a38"}}>{errors.username}</span>}
-                </div>
-                <div className={classnames('field', {'error': errors.email})}>
-                    <label>Email</label>
-                    <input 
-                        type="email"
-                        value={this.state.email}
-                        onChange={this.onChange}
-                        name="email" 
-                        placeholder="Email"
-                    />
-                    {errors.email && <span style={{color: "#9f3a38"}}>{errors.email}</span>}
-                </div>
-                <div className={classnames('field', {'error': errors.password})}>
-                    <label>Password</label>
-                    <input 
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.onChange}
-                        name="password" 
-                        placeholder="Password"
-                    />
-                    {errors.password && <span style={{color: "#9f3a38"}}>{errors.password}</span>}                    
-                </div>
-                <div className={classnames('field', {'error': errors.passwordConfirmation})}>
-                    <label>Password Confirmation</label>
-                    <input 
-                        type="password"
-                        value={this.state.passwordConfirmation}
-                        onChange={this.onChange}
-                        name="passwordConfirmation" 
-                        placeholder="Retype password"
-                    />
-                    {errors.passwordConfirmation && <span style={{color: "#9f3a38"}}>{errors.passwordConfirmation}</span>}                    
-                </div>
+                <TextField
+                    error={errors.username}
+                    value={this.state.username}
+                    onChange={this.onChange}
+                    field="username"
+                    label="Username"
+                />
+                <TextField
+                    error={errors.email}
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    field="email"
+                    label="Email"
+                />
+                <TextField
+                    error={errors.password}
+                    value={this.state.password}
+                    onChange={this.onChange}
+                    field="password"
+                    label="Password"
+                    type="password"
+                />
+                <TextField
+                    error={errors.passwordConfirmation}
+                    value={this.state.passwordConfirmation}
+                    onChange={this.onChange}
+                    field="passwordConfirmation"
+                    label="Password Confirmation"
+                    type="password"
+                />
                 <div className={classnames('field', {'error': errors.timezone})}>
                     <label>Timezone</label>
                     <select 
