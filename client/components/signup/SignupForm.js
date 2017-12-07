@@ -42,7 +42,10 @@ import TextField from '../common/TextField';
         if(this.isValid()) {
             this.setState({ errors: {}, isLoading: true });
             this.props.userSignupRequest(this.state).then(
-                () => {},
+                () => {
+                    // browserHistory.push('/');
+                    this.context.router.push('/');
+                },
                 (data) => this.setState({ errors: data.response.data, isLoading: false })
             );
         }
@@ -106,6 +109,10 @@ import TextField from '../common/TextField';
 
 SignupForm.propTypes = {
     userSignupRequest: PropTypes.func.isRequired
+}
+
+SignupForm.contextTypes = {
+    router: PropTypes.object.isRequired
 }
 
 export default SignupForm;
