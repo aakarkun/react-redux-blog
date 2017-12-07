@@ -1,8 +1,9 @@
 import React from 'react';
-import timezones from '../../data/timezones';
+// import browserHistory from 'react-router';
 import PropTypes from 'prop-types';
 import map from 'lodash/map';
 import classnames from 'classnames';
+import timezones from '../../data/timezones';
 import validateInput from '../../../server/shared/validations/signup';
 import TextField from '../common/TextField';
 
@@ -42,7 +43,10 @@ import TextField from '../common/TextField';
         if(this.isValid()) {
             this.setState({ errors: {}, isLoading: true });
             this.props.userSignupRequest(this.state).then(
-                () => {},
+                () => {
+                    // browserHistory.push('/');
+                    this.context.router.push('/');
+                },
                 (data) => this.setState({ errors: data.response.data, isLoading: false })
             );
         }
@@ -106,6 +110,10 @@ import TextField from '../common/TextField';
 
 SignupForm.propTypes = {
     userSignupRequest: PropTypes.func.isRequired
+}
+
+SignupForm.contextTypes = {
+    router: PropTypes.object.isRequired
 }
 
 export default SignupForm;
