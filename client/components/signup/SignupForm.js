@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import timezones from '../../data/timezones';
 import validateInput from '../../../server/shared/validations/signup';
 import TextField from '../common/TextField';
+import { addFlashMessage } from '../../actions/flashMessages';
 
  class SignupForm extends React.Component {
      constructor(props) {
@@ -44,7 +45,10 @@ import TextField from '../common/TextField';
             this.setState({ errors: {}, isLoading: true });
             this.props.userSignupRequest(this.state).then(
                 () => {
-                    // browserHistory.push('/');
+                    this.props.addFlashMessage({
+                        type: "success",
+                        text: "You signed up successfully. Welcome! @" + this.state.username 
+                    })
                     this.context.router.push('/');
                 },
                 (data) => this.setState({ errors: data.response.data, isLoading: false })
@@ -109,7 +113,8 @@ import TextField from '../common/TextField';
 }
 
 SignupForm.propTypes = {
-    userSignupRequest: PropTypes.func.isRequired
+    userSignupRequest: PropTypes.func.isRequired,
+    addFlashMessage: PropTypes.func.isRequired 
 }
 
 SignupForm.contextTypes = {
