@@ -47,7 +47,7 @@ import { addFlashMessage } from '../../actions/flashMessages';
                 () => {
                     this.props.addFlashMessage({
                         type: "success",
-                        text: "You signed up successfully. Welcome! @" + this.state.username 
+                        text: "You signed up successfully. Welcome! " + this.state.username.toString().toUpperCase() 
                     })
                     this.context.router.push('/');
                 },
